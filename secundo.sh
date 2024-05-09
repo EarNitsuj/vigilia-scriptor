@@ -60,7 +60,8 @@ elif [ "$vps_location" = "EU" ]; then
     curl -o ~/.sentinelnode/config.toml https://raw.githubusercontent.com/EarNitsuj/sentinel-eu-config/main/config.toml && \
     echo "EU configuration downloaded successfully."
 else
-    echo "Invalid location. Please enter 'EU' or 'US'."
+    curl -o ~/.sentinelnode/config.toml https://raw.githubusercontent.com/EarNitsuj/sentinel-eu-config/main/config.toml && \
+    echo "Invalid location. EU configuration downloaded instead."
 fi
 
 # Update config.toml values
