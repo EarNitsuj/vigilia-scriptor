@@ -89,4 +89,16 @@ echo -e "$(tput bold)Country code:$(tput sgr0) $country_code"
 echo -e "$(tput bold)Region/State:$(tput sgr0) $region_name"
 echo -e "$(tput bold)Locality/City:$(tput sgr0) $city"
 echo -e "$(tput bold)DVPN port (TCP):$(tput sgr0) ${Yellow}$dvpn_port${Color_Off}"
-echo -e "$(tput bold)V2Ray port (TCP):$(tput sgr0) ${Yellow}$protocol_port${Color_Off}"
+echo -e "$(tput bold)V2Ray port (TCP):$(tput sgr0) ${Yellow}$protocol_port${Color_Off}"  && \
+
+# Prompt the user
+read -p "\n\n$(tput bold)Proceed with next step (Y/N)? $(tput sgr0)" answer
+
+# Check the user's response
+if [[ $answer = [Yy] ]]; then
+    # Execute the script if the user answers 'Y' or 'y'
+    ./tertius.sh
+else
+    # Do nothing if the user answers anything else
+    echo "Exiting without action."
+fi
