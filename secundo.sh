@@ -3,6 +3,7 @@
 Yellow="\033[0;33m"
 Color_Off="\033[0m"
 
+clear; \
 # Ask for the moniker (node name)
 read -p "$(tput bold)Please enter your name of the node: $(tput sgr0)" node_name
 
