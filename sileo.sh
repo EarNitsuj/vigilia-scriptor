@@ -8,18 +8,19 @@ docker stop sentinel-dvpn-node && \
 docker rm sentinel-dvpn-node && \
 
 # Prompt the user
-read -p "$(tput bold)With usual passphrase (Y/N)? $(tput sgr0)" answer && \
+read -p "$(tput bold)With usual passphrase (Y/N)? $(tput sgr0)" answer
 
 # Check the user's response
 if [[ $answer = [Yy] ]]; then
-    pass="welcometomynode" && \
+    pass="welcometomynode"
 else
-    read -s -p "$(tput bold)Please enter passphrase: $(tput sgr0)" user_pass && \
-    pass=user_pass && \
+    read -s -p "$(tput bold)Please enter passphrase: $(tput sgr0)" user_pass
+    pass=user_pass
 fi
 
 # Get config.toml protocol
-saved_protocol=$(python3 -c 'import toml; config = toml.load(open("'"$HOME"'/.sentinelnode/config.toml")); protocol_type = config["node"]["type"]; print(protocol_type)') && \
+saved_protocol=$(python3 -c 'import toml; config = toml.load(open("'"$HOME"'/.sentinelnode/config.toml")); protocol_type = config["node"]["type"]; print(protocol_type)')
+echo -e "\n\n Protocol: $(tput bold)$saved_protocol$(tput sgr0) \n\n"
 
 if [ "$saved_protocol" = "wireguard" ]; then
     screen -S dvpn -dm bash -c '
