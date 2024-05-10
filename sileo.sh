@@ -28,7 +28,7 @@ if [ "$saved_protocol" = "wireguard" ]; then
     dvpn_port=\$(python3 -c 'import toml; config = toml.load(open(\""${HOME}/.sentinelnode/config.toml"\")); listen_on = config[\"node\"][\"listen_on\"]; print(listen_on.split(\":\")[1])') &&
     protocol_port=\$(python3 -c 'import toml; config = toml.load(open(\""${HOME}/.sentinelnode/wireguard.toml"\")); print(config[\"listen_port\"])') &&
     echo -e \"\n\n\n\WireGuard port is (\$protocol_port) | DVPN port is (\$dvpn_port)\n\n\n\n\" &&
-    echo -e \$pass | docker run --sig-proxy=false \
+    echo -e \"$pass\" | docker run --sig-proxy=false \
     --detach-keys='ctrl-q' \
     --interactive \
     --volume \"${HOME}/.sentinelnode:/root/.sentinelnode\" \
@@ -50,7 +50,7 @@ else
     dvpn_port=\$(python3 -c 'import toml; config = toml.load(open(\""${HOME}/.sentinelnode/config.toml"\")); listen_on = config[\"node\"][\"listen_on\"]; print(listen_on.split(\":\")[1])') &&
     protocol_port=\$(python3 -c 'import toml; config = toml.load(open(\""${HOME}/.sentinelnode/v2ray.toml"\")); print(config[\"vmess\"][\"listen_port\"])') &&
     echo -e \"\n\n\n\nV2Ray port is (\$protocol_port) | DVPN port is (\$dvpn_port)\n\n\n\n\" &&
-    echo -e \$pass | docker run --sig-proxy=false \
+    echo -e \"$pass\" | docker run --sig-proxy=false \
     --detach-keys='ctrl-q' \
     --interactive \
     --volume \"${HOME}/.sentinelnode:/root/.sentinelnode\" \
