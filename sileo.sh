@@ -1,3 +1,5 @@
+#!/bin/bash
+
 saved_protocol=$(python3 -c 'import toml; config = toml.load(open("'"$HOME"'/.sentinelnode/config.toml")); protocol_type = config["node"]["type"]; print(protocol_type)')
 
 if [ "$saved_protocol" = "wireguard" ]; then
