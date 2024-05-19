@@ -15,5 +15,12 @@ sudo systemctl enable --now docker && \
 # Add current user to the Docker group
 sudo usermod -aG docker $(whoami) && \
 
-# Switch to current user and run secundo.sh script
-sudo -i -u $(whoami) -- ./secundo.sh
+# Switch to current user
+sudo -i -u $(whoami) && \
+
+# Sleep for 2 minutes to allow any background processes to complete
+sleep 120 && \
+
+# Run secundo.sh script as the current user
+./secundo.sh
+
