@@ -19,7 +19,7 @@ sudo usermod -aG docker $(whoami) && \
 sudo -i -u $(whoami) && \
 
 # Sleep for 2 minutes to allow any background processes to complete
-sleep 120 && \
+sleep 60 && \
 
 # Run secundo.sh script as the current user
 ./secundo.sh
