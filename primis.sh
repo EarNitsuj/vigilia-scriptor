@@ -28,9 +28,21 @@ echo -e "Set 5 seconds sleep \n\n"  && \
 sudo usermod -aG docker $(whoami) && \
 echo -e "Add current user to the Docker group \n\n"  && \
 
+# Set 10 seconds sleep
+sleep 10 && \
+
 # Switch to current user
 sudo -i -u $(whoami) && \
 echo -e "Switch to current user \n\n"  && \
+
+# Set 5 seconds sleep
+sleep 5 && \
+
+clear
+echo -e "Execute next script \n\n"  && \
+
+# Set 5 seconds sleep
+sleep 5 && \
 
 ./secundo.sh
 
