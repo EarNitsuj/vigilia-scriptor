@@ -10,10 +10,13 @@ curl -fsSL get.docker.com -o ${HOME}/get-docker.sh && \
 sudo sh ${HOME}/get-docker.sh && \
 
 # Set 2 minute sleep
-sleep 120 && \
+sleep 100 && \
 
 # Enable and start Docker service
 sudo systemctl enable --now docker && \
+
+# Set 5 seconds sleep
+sleep 5 && \
 
 # Add current user to the Docker group
 sudo usermod -aG docker $(whoami) && \
