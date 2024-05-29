@@ -9,6 +9,9 @@ curl -fsSL get.docker.com -o ${HOME}/get-docker.sh && \
 # Execute Docker installation script
 sudo sh ${HOME}/get-docker.sh && \
 
+# Set 2 minute sleep
+sleep 120 && \
+
 # Enable and start Docker service
 sudo systemctl enable --now docker && \
 
