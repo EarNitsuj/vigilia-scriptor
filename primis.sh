@@ -32,17 +32,6 @@ echo -e "Add current user to the Docker group \n\n"  && \
 sleep 10 && \
 
 # Switch to current user
-sudo -i -u $(whoami) && \
-echo -e "Switch to current user \n\n"  && \
+sudo -i -u $(whoami) sh -c "echo 'Switch to current user and execute the next script\n\n'; ./secundo.sh"
 
-# Set 5 seconds sleep
-sleep 5 && \
-
-clear
-echo -e "Execute next script \n\n"  && \
-
-# Set 5 seconds sleep
-sleep 5 && \
-
-./secundo.sh
 
