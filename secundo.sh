@@ -82,7 +82,7 @@ if [[ -n "$node_name" ]]; then
         dvpn_port=$simple_dvpn_port
     else
         # Get DVPN default port
-        dvpn_port=$(python3 -c 'import toml; config = toml.load(open("'"$HOME"'/.sentinelnode/config.toml")); listen_on = config["node"]["listen_on"]; print(listen_on.split(":")[1])') && \
+        dvpn_port=$(python3 -c 'import toml; config = toml.load(open("'"$HOME"'/.sentinelnode/config.toml")); listen_on = config["node"]["listen_on"]; print(listen_on.split(":")[1])')
     fi
     
     # Delete config.toml
@@ -96,8 +96,8 @@ if [[ -n "$node_name" ]]; then
         curl -o ~/.sentinelnode/config.toml https://raw.githubusercontent.com/EarNitsuj/sentinel-eu-config/main/config.toml && \
         echo "EU configuration downloaded successfully."
     else
-        curl -o ~/.sentinelnode/config.toml https://raw.githubusercontent.com/EarNitsuj/sentinel-us-config/main/config.toml && \
-        echo "Invalid location. NA configuration downloaded instead."
+        curl -o ~/.sentinelnode/config.toml https://raw.githubusercontent.com/EarNitsuj/sentinel-eu-config/main/config.toml && \
+        echo "Invalid location. EU configuration downloaded instead."
     fi
     
     # Update config.toml values
