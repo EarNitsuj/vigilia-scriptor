@@ -4,6 +4,33 @@ Yellow="\033[0;33m"
 Color_Off="\033[0m"
 
 clear; \
+
+read -p "$(tput bold)Set DVPN and VPN Protocol ports within range (Y/N)? $(tput sgr0)" set_ports
+
+if [[ "$set_ports" == "y" ]]; then
+  read -p "$(tput bold)Enter the start of the port range: $(tput sgr0)" port_start
+  
+  while true; do
+    read -p "$(tput bold)Enter the end of the port range: $(tput sgr0)" port_end
+    if [[ "$port_end" -gt "$port_start" ]]; then
+      break
+    else
+      echo "$(tput bold)Invalid end port. The end port must be greater than the start port. Please try again.$(tput sgr0)"
+    fi
+  done
+  
+  simple_dvpn_port=$(shuf -i "$port_start"-"$port_end" -n 1)
+  while true; do
+    simple_protocol_port=$(shuf -i "$port_start"-"$port_end" -n 1)
+    if [[ "$simple_protocol_port" -ne "$simple_dvpn_port" ]]; then
+      break
+    fi
+  done
+
+else
+  echo "No ports set."
+fi
+
 # Ask for the moniker (node name)
 read -p "$(tput bold)Please enter your name of the node: $(tput sgr0)" node_name
 
@@ -51,8 +78,12 @@ if [[ -n "$node_name" ]]; then
         --volume ${HOME}/.sentinelnode:/root/.sentinelnode \
         sentinel-dvpn-node process config init && \
     
-    # Get DVPN default port
-    dvpn_port=$(python3 -c 'import toml; config = toml.load(open("'"$HOME"'/.sentinelnode/config.toml")); listen_on = config["node"]["listen_on"]; print(listen_on.split(":")[1])') && \
+    if [[ "$set_ports" == "y" ]]; then
+        dvpn_port=$simple_dvpn_port && \
+    else
+        # Get DVPN default port
+        dvpn_port=$(python3 -c 'import toml; config = toml.load(open("'"$HOME"'/.sentinelnode/config.toml")); listen_on = config["node"]["listen_on"]; print(listen_on.split(":")[1])') && \
+    fi
     
     # Delete config.toml
     sudo rm ~/.sentinelnode/config.toml && \
@@ -65,8 +96,8 @@ if [[ -n "$node_name" ]]; then
         curl -o ~/.sentinelnode/config.toml https://raw.githubusercontent.com/EarNitsuj/sentinel-eu-config/main/config.toml && \
         echo "EU configuration downloaded successfully."
     else
-        curl -o ~/.sentinelnode/config.toml https://raw.githubusercontent.com/EarNitsuj/sentinel-eu-config/main/config.toml && \
-        echo "Invalid location. EU configuration downloaded instead."
+        curl -o ~/.sentinelnode/config.toml https://raw.githubusercontent.com/EarNitsuj/sentinel-us-config/main/config.toml && \
+        echo "Invalid location. NA configuration downloaded instead."
     fi
     
     # Update config.toml values
@@ -76,6 +107,13 @@ if [[ -n "$node_name" ]]; then
     sudo docker run --rm \
         --volume ${HOME}/.sentinelnode:/root/.sentinelnode \
         sentinel-dvpn-node process v2ray config init && \
+
+    if [[ "$set_ports" == "y" ]]; then
+        sed -i "s/\(listen_port\s*=\s*\).*/\1$simple_protocol_port/" ~/.sentinelnode/v2ray.toml && \
+        sleep 3 && \
+    else
+        # Do nothing
+    fi
     
     # Get Protocol's (V2Ray) port
     protocol_port=$(python3 -c 'import toml; config = toml.load(open("'"$HOME"'/.sentinelnode/v2ray.toml")); print(config["vmess"]["listen_port"])') && \
