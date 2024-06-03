@@ -79,6 +79,7 @@ if [[ -n "$node_name" ]]; then
         sentinel-dvpn-node process config init && \
     
     if [[ "$set_ports" == "y" ]]; then
+        # Set simple_dvpn_port as the dvpn_port
         dvpn_port=$simple_dvpn_port
     else
         # Get DVPN default port
