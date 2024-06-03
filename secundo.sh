@@ -112,8 +112,6 @@ if [[ -n "$node_name" ]]; then
     if [[ "$set_ports" == "y" ]]; then
         sed -i "s/\(listen_port\s*=\s*\).*/\1$simple_protocol_port/" ~/.sentinelnode/v2ray.toml && \
         sleep 3
-    else
-        # Do nothing
     fi
     
     # Get Protocol's (V2Ray) port
