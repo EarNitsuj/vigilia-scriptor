@@ -79,7 +79,7 @@ if [[ -n "$node_name" ]]; then
         sentinel-dvpn-node process config init && \
     
     if [[ "$set_ports" == "y" ]]; then
-        dvpn_port=$simple_dvpn_port && \
+        dvpn_port=$simple_dvpn_port
     else
         # Get DVPN default port
         dvpn_port=$(python3 -c 'import toml; config = toml.load(open("'"$HOME"'/.sentinelnode/config.toml")); listen_on = config["node"]["listen_on"]; print(listen_on.split(":")[1])') && \
@@ -110,7 +110,7 @@ if [[ -n "$node_name" ]]; then
 
     if [[ "$set_ports" == "y" ]]; then
         sed -i "s/\(listen_port\s*=\s*\).*/\1$simple_protocol_port/" ~/.sentinelnode/v2ray.toml && \
-        sleep 3 && \
+        sleep 3
     else
         # Do nothing
     fi
