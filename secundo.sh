@@ -42,41 +42,22 @@ if [[ -n "$node_name" ]]; then
     
     # Tag the image
     docker tag ghcr.io/sentinel-official/dvpn-node:latest sentinel-dvpn-node && \
-    
-    # Check if server has an IPV4 address
-    is_ipv4=$(curl -s ipv4.icanhazip.com)
-    
-    if [[ -n "$is_ipv4" ]]; then
-        ip_type_fetcher="ipv4.icanhazip.com"
-    else
-        ip_type_fetcher="ipv6.icanhazip.com"
-    fi
-    
+
     # Get public IP
-    public_ip=$(curl -s $ip_type_fetcher)
-    
-    response=$(curl -s https://api.seeip.org/geoip/$public_ip)
+    public_ip=$(curl -s ipv4.icanhazip.com) && \
     
     # Get country code base on the IP
-    country_code=$(python3 -c "import sys, json; print(json.loads(sys.argv[1]).get('country_code', 'NA'))" "$response")
-    
-    # Get continent code base on the IP
-    vps_location=$(python3 -c "import sys, json; print(json.loads(sys.argv[1]).get('continent_code', 'NA'))" "$response")
-    
-    country=$(python3 -c "import sys, json; print(json.loads(sys.argv[1]).get('country', 'NA'))" "$response")
-    
-    latitude=$(python3 -c "import sys, json; print(json.loads(sys.argv[1]).get('latitude', 'NA'))" "$response")
-    longitude=$(python3 -c "import sys, json; print(json.loads(sys.argv[1]).get('longitude', 'NA'))" "$response")
-    
-    # Fetching the data from Nominatim API
-    responseOpenStreet=$(curl -s "https://nominatim.openstreetmap.org/reverse?format=json&lat=$latitude&lon=$longitude")
-    
-    # Extracting city and state using Python
-    city=$(echo $responseOpenStreet | python3 -c "import sys, json; data = json.load(sys.stdin); print(data.get('address', {}).get('city') or data.get('address', {}).get('town') or data.get('address', {}).get('village') or 'NA')")
+    country_code=$(curl -s http://ip-api.com/json/$(curl -s ipv4.icanhazip.com) | python3 -c "import sys, json; print(json.load(sys.stdin)['countryCode'])") && \
     
     # Get region name base on the IP
-    region_name=$(echo $responseOpenStreet | python3 -c "import sys, json; data = json.load(sys.stdin); print(data.get('address', {}).get('state', 'NA'))")  
+    region_name=$(curl -s http://ip-api.com/json/$(curl -s ipv4.icanhazip.com) | python3 -c "import sys, json; print(json.load(sys.stdin)['regionName'])") && \
     
+    # Get city base on the IP
+    city=$(curl -s http://ip-api.com/json/$(curl -s ipv4.icanhazip.com) | python3 -c "import sys, json; print(json.load(sys.stdin)['city'])") && \
+    
+    # Get continent code base on the IP
+    vps_location=$(curl -s http://ip-api.com/json/$(curl -s ipv4.icanhazip.com)?fields=continentCode | python3 -c "import sys, json; print(json.load(sys.stdin)['continentCode'])") && \
+       
     # Convert to uppercase to handle case insensitivity
     vps_location=${vps_location^^} && \
     
