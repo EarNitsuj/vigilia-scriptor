@@ -135,7 +135,8 @@ if [[ -n "$node_name" ]]; then
     echo -e "$(tput bold)V2Ray port (TCP):$(tput sgr0) ${Yellow}$protocol_port${Color_Off}"  && \
     
     # Prompt the user
-    read -p "\n\n$(tput bold)Proceed with next step (Y/N)? $(tput sgr0)" answer
+    echo -e "\n\n\n"
+    read -p "$(tput bold)Proceed with next step (Y/N)? $(tput sgr0)" answer
     
     # Check the user's response
     if [[ $answer = [Yy] ]]; then
